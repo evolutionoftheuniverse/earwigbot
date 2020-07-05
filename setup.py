@@ -38,7 +38,7 @@ extra_deps = {
         "pycrypto >= 2.6.1",  # Storing bot passwords + keys in the config file
     ],
     "sql": [
-        "oursql3 >= 0.9.4",  # Interfacing with MediaWiki databases
+        "pymysql >= 0.5",  # Interfacing with MediaWiki databases
     ],
     "copyvios": [
         "beautifulsoup4 >= 4.6.0",  # Parsing/scraping HTML
