@@ -52,7 +52,7 @@ from earwigbot.wiki import SitesDB
 
 class CommandTestCase(TestCase):
     re_sender = re.compile(":(.*?)!(.*?)@(.*?)\Z")
-
+    name = "TestCase"
     def setUp(self, command):
         self.bot = FakeBot(path.dirname(__file__))
         self.command = command(self.bot)
