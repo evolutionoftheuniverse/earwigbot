@@ -27,7 +27,7 @@ from tests import CommandTestCase
 
 class TestCalc(CommandTestCase):
     
-    name="TestCalc"
+    self.name="TestCalc"
 
     def setUp(self):
         super(TestCalc, self).setUp(Command)
