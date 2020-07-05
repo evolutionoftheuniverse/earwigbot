@@ -119,9 +119,6 @@ class FakeBot(Bot):
 
         self.component_lock = Lock()
         self._keep_looping = True
-        
-        self.commands.load()
-        self.tasks.load()
 
 
 class FakeBotConfig(BotConfig):
