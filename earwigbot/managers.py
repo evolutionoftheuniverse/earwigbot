@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import importlib
+import imp
 from os import listdir, path
 from re import sub
 from threading import RLock, Thread
@@ -107,9 +107,9 @@ class _ResourceManager(object):
         <_load_resource>`, and finally log the addition. Any problems along
         the way will either be ignored or logged.
         """
-        f, path, desc = importlib.find_module(name, [path])
+        f, path, desc = imp.find_module(name, [path])
         try:
-            module = importlib.load_module(name, f, path, desc)
+            module = imp.load_module(name, f, path, desc)
         except Exception:
             e = "Couldn't load module '{0}' (from {1})"
             self.logger.exception(e.format(name, path))
