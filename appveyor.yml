@@ -11,7 +11,7 @@ environment:
 build: off
 
 install:
-- virtualenv -p C:\Python27\python.exe
+- virtualenv env C:\Python27\python.exe
 - sudo apt-get install python-dev
 - sudo apt-get install libmysqlclient-dev
 - pip install tox
