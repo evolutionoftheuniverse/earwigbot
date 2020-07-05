@@ -28,9 +28,9 @@ from tests import CommandTestCase
 class TestCalc(CommandTestCase):
 
     def setUp(self):
+        name="TestCalc"
         super(TestCalc, self).setUp(Command)
         
-    name="TestCalc"
     
     def test_check(self):
         self.assertFalse(self.command.check(self.make_msg("bloop")))
