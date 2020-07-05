@@ -2,6 +2,7 @@
 ---
 environment:
   matrix:
+  - PYTHON: "C:\\Python27\\python.exe"
   - TOXENV: py27
   - TOXENV: py35
   - TOXENV: py36
@@ -11,7 +12,6 @@ environment:
 build: off
 
 install:
-- virtualenv env C:\Python27\python.exe
 - sudo apt-get install python-dev
 - sudo apt-get install libmysqlclient-dev
 - pip install tox
