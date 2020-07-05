@@ -26,8 +26,6 @@ from earwigbot.commands.calc import Command
 from tests import CommandTestCase
 
 class TestCalc(CommandTestCase):
-    
-    self.name="TestCalc"
 
     def setUp(self):
         super(TestCalc, self).setUp(Command)
@@ -56,6 +54,8 @@ class TestCalc(CommandTestCase):
             q = test[0].strip().split()
             self.command.process(self.make_msg("calc", *q))
             self.assertReply(test[1])
+    
+    name="TestCalc"
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
