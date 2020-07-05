@@ -12,6 +12,7 @@ build: off
 
 install:
 - pip install tox
+- pip install cython
 
 test_script:
 - tox
