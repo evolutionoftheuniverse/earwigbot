@@ -26,7 +26,9 @@ from earwigbot.commands.test import Command
 from tests import CommandTestCase
 
 class TestTest(CommandTestCase):
-
+    
+    name="TestTest"
+    
     def setUp(self):
         super(TestTest, self).setUp(Command)
 
