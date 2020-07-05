@@ -38,7 +38,7 @@ from earwigbot.wiki.category import Category
 from earwigbot.wiki.page import Page
 from earwigbot.wiki.user import User
 
-oursql = importer.new("oursql")
+pymysql = importer.new("pymysql")
 
 __all__ = ["Site"]
 
@@ -586,9 +586,9 @@ class Site(object):
             args["autoreconnect"] = True
 
         try:
-            self._sql_conn = oursql.connect(**args)
+            self._sql_conn = pymysql.connect(**args)
         except ImportError:
-            e = "SQL querying requires the 'oursql' package: http://packages.python.org/oursql/"
+            e = "SQL querying requires the 'pymysql' package: http://packages.python.org/pymysql/"
             raise exceptions.SQLError(e)
 
     def _get_service_order(self):
@@ -610,7 +610,7 @@ class Site(object):
             self._sql_info_cache["lastcheck"] = now
             try:
                 self._sql_info_cache["replag"] = sqllag = self.get_replag()
-            except (exceptions.SQLError, oursql.Error):
+            except (exceptions.SQLError, pymysql.Error):
                 self._sql_info_cache["usable"] = False
                 return [self.SERVICE_API]
             self._sql_info_cache["usable"] = True
@@ -747,9 +747,9 @@ class Site(object):
         """
         if not cursor_class:
             if dict_cursor:
-                cursor_class = oursql.DictCursor
+                cursor_class = pymysql.cursors.DictCursor
             else:
-                cursor_class = oursql.Cursor
+                cursor_class = pymysql.cursors.Cursor
         klass = cursor_class
 
         with self._sql_lock:
