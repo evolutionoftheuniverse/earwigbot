@@ -55,7 +55,7 @@ class CommandTestCase(TestCase):
     re_sender = re.compile(":(.*?)!(.*?)@(.*?)\Z")
 
     def setUp(self, command):
-        self.bot = FakeBot(path.dirname(path.abspath(__file__)))
+        self.bot = FakeBot(path.dirname(__file__))
         self.command = command(self.bot)
         self.command.connection = self.connection = self.bot.frontend
 
@@ -110,6 +110,7 @@ class CommandTestCase(TestCase):
 
 class FakeBot(Bot):
     def __init__(self, root_dir):
+        self.root_dir = root_dir
         self.config = FakeBotConfig(root_dir, level=20)
         self.logger = logging.getLogger("earwigbot")
         self.commands = CommandManager(self)
