@@ -111,7 +111,7 @@ class CommandTestCase(TestCase):
 class FakeBot(Bot):
     def __init__(self, root_dir):
         self.root_dir = root_dir
-        self.config = FakeBotConfig(root_dir, level=20)
+        self.config = FakeBotConfig(self.root_dir, level=20)
         self.logger = logging.getLogger("earwigbot")
         self.commands = CommandManager(self)
         self.tasks = TaskManager(self)
