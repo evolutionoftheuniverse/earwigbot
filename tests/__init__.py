@@ -45,10 +45,9 @@ from threading import Lock
 from unittest import TestCase
 
 from earwigbot.bot import Bot
-from earwigbot.commands import CommandManager
+from earwigbot.managers import CommandManager, TaskManager
 from earwigbot.config import BotConfig
 from earwigbot.irc import IRCConnection, Data
-from earwigbot.tasks import TaskManager
 from earwigbot.wiki import SitesDB
 
 class CommandTestCase(TestCase):
