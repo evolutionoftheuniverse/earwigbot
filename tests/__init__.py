@@ -48,7 +48,7 @@ from earwigbot.bot import Bot
 from earwigbot.commands import *
 from earwigbot.config import BotConfig
 from earwigbot.irc import IRCConnection, Data
-from earwigbot.tasks import TaskManager
+from earwigbot.tasks import *
 from earwigbot.wiki import SitesDB
 
 class CommandTestCase(TestCase):
