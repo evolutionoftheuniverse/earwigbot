@@ -54,7 +54,6 @@ class CommandTestCase(TestCase):
     re_sender = re.compile(":(.*?)!(.*?)@(.*?)\Z")
     
     def setUp(self, command):
-        name = "TestCase"
         self.bot = FakeBot(path.dirname(__file__))
         self.command = command(self.bot)
         self.command.connection = self.connection = self.bot.frontend
