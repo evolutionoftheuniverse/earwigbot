@@ -63,7 +63,7 @@ class ConfigNode(object):
 
     def _dump(self):
         data = self._data.copy()
-        for key, val in list(data.items()):
+        for key, val in data.items():
             if isinstance(val, ConfigNode):
                 data[key] = val._dump()
         return data
@@ -95,10 +95,10 @@ class ConfigNode(object):
         return list(self._data.items())
 
     def iterkeys(self):
-        return iter(list(self._data.keys()))
+        return iter(self._data.keys())
 
     def itervalues(self):
-        return iter(list(self._data.values()))
+        return iter(self._data.values())
 
     def iteritems(self):
-        return iter(list(self._data.items()))
+        return iter(self._data.items())

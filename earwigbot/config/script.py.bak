@@ -72,14 +72,14 @@ class ConfigScript(object):
         self._lang = None
 
     def _print(self, text):
-        print((fill(re.sub("\s\s+", " ", text), self.WIDTH)))
+        print(fill(re.sub("\s\s+", " ", text), self.WIDTH))
 
     def _print_no_nl(self, text):
         sys.stdout.write(fill(re.sub("\s\s+", " ", text), self.WIDTH))
         sys.stdout.flush()
 
     def _pause(self):
-        eval(input(self.PROMPT + "Press enter to continue: "))
+        input(self.PROMPT + "Press enter to continue: ")
 
     def _ask(self, text, default=None, require=True):
         text = self.PROMPT + text
@@ -87,9 +87,9 @@ class ConfigScript(object):
             text += " \x1b[33m[{0}]\x1b[0m".format(default)
         lines = wrap(re.sub("\s\s+", " ", text), self.WIDTH)
         if len(lines) > 1:
-            print(("\n".join(lines[:-1])))
+            print("\n".join(lines[:-1]))
         while True:
-            answer = eval(input(lines[-1] + " ")) or default
+            answer = input(lines[-1] + " ") or default
             if answer or not require:
                 return answer
 
@@ -101,7 +101,7 @@ class ConfigScript(object):
             text += " \x1b[33m[y/N]\x1b[0m"
         lines = wrap(re.sub("\s\s+", " ", text), self.WIDTH)
         if len(lines) > 1:
-            print(("\n".join(lines[:-1])))
+            print("\n".join(lines[:-1]))
         while True:
             answer = input(lines[-1] + " ").lower()
             if not answer:
@@ -127,11 +127,11 @@ class ConfigScript(object):
             return password
 
     def _ask_list(self, text):
-        print((fill(re.sub("\s\s+", " ", self.PROMPT + text), self.WIDTH)))
+        print(fill(re.sub("\s\s+", " ", self.PROMPT + text), self.WIDTH))
         print("[one item per line; blank line to end]:")
         result = []
         while True:
-            line = eval(input(self.PROMPT))
+            line = input(self.PROMPT)
             if line:
                 result.append(line)
             else:
@@ -160,8 +160,8 @@ class ConfigScript(object):
                 self._print("""Encryption requires the 'py-bcrypt' and
                                'pycrypto' packages:""")
                 strt, end = " * \x1b[36m", "\x1b[0m"
-                print((strt + "http://www.mindrot.org/projects/py-bcrypt/" + end))
-                print((strt + "https://www.dlitz.net/software/pycrypto/" + end))
+                print(strt + "http://www.mindrot.org/projects/py-bcrypt/" + end)
+                print(strt + "https://www.dlitz.net/software/pycrypto/" + end)
                 self._print("""I will disable encryption for now; restart
                                configuration after installing these packages if
                                you want it.""")
@@ -210,7 +210,7 @@ class ConfigScript(object):
             site = self.config.bot.wiki.add_site(**kwargs)
         except exceptions.APIError as exc:
             print(" API error!")
-            print(("\x1b[31m" + exc.message + "\x1b[0m"))
+            print("\x1b[31m" + exc.message + "\x1b[0m")
             question = "Would you like to re-enter the site information?"
             if self._ask_bool(question):
                 return self._set_wiki()
@@ -220,7 +220,7 @@ class ConfigScript(object):
             return self._set_wiki()
         except exceptions.LoginError as exc:
             print(" login error!")
-            print(("\x1b[31m" + exc.message + "\x1b[0m"))
+            print("\x1b[31m" + exc.message + "\x1b[0m")
             question = "Would you like to re-enter your login information?"
             if self._ask_bool(question):
                 self.data["wiki"]["username"] = self._ask("Bot username:")

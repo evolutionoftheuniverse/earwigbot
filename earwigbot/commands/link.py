@@ -40,13 +40,13 @@ class Link(Command):
         self.site = self.bot.wiki.get_site()
 
         if re.search("(\[\[(.*?)\]\])|(\{\{(.*?)\}\})", data.msg):
-            links = u" , ".join(self.parse_line(data.msg))
+            links = " , ".join(self.parse_line(data.msg))
             self.reply(data, links.encode("utf8"))
 
         elif data.command == "link":
             if not data.args:
                 if data.chan in self.last:
-                    links = u" , ".join(self.parse_line(self.last[data.chan]))
+                    links = " , ".join(self.parse_line(self.last[data.chan]))
                     self.reply(data, links.encode("utf8"))
                 else:
                     self.reply(data, "What do you want me to link to?")

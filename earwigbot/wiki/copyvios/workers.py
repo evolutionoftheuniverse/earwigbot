@@ -22,16 +22,17 @@
 
 from collections import deque
 from gzip import GzipFile
-from httplib import HTTPException
+from http.client import HTTPException
 from logging import getLogger
 from math import log
-from Queue import Empty, Queue
+from queue import Empty, Queue
 from socket import error as socket_error
-from StringIO import StringIO
+from io import StringIO
 from struct import error as struct_error
 from threading import Lock, Thread
 from time import time
-from urllib2 import build_opener, URLError
+from urllib.request import build_opener
+from urllib.error import URLError
 
 from earwigbot import importer
 from earwigbot.exceptions import ParserExclusionError
@@ -63,7 +64,7 @@ def globalize(num_workers=8):
         return
 
     _global_queues = _CopyvioQueues()
-    for i in xrange(num_workers):
+    for i in range(num_workers):
         worker = _CopyvioWorker("global-{0}".format(i), _global_queues)
         worker.start()
         _global_workers.append(worker)
@@ -82,7 +83,7 @@ def localize():
     if not _is_globalized:
         return
 
-    for i in xrange(len(_global_workers)):
+    for i in range(len(_global_workers)):
         _global_queues.unassigned.put((StopIteration, None))
     _global_queues = None
     _global_workers = []
@@ -171,7 +172,7 @@ class _CopyvioWorker(object):
         site, queue = self._queues.unassigned.get(timeout=timeout)
         if site is StopIteration:
             raise StopIteration
-        self._logger.debug(u"Acquired new site queue: {0}".format(site))
+        self._logger.debug("Acquired new site queue: {0}".format(site))
         self._site = site
         self._queue = queue
 
@@ -180,7 +181,7 @@ class _CopyvioWorker(object):
         if not self._site:
             self._acquire_new_site()
 
-        logmsg = u"Fetching source URL from queue {0}"
+        logmsg = "Fetching source URL from queue {0}"
         self._logger.debug(logmsg.format(self._site))
         self._queues.lock.acquire()
         try:
@@ -193,7 +194,7 @@ class _CopyvioWorker(object):
             self._queues.lock.release()
             return self._dequeue()
 
-        self._logger.debug(u"Got source URL: {0}".format(source.url))
+        self._logger.debug("Got source URL: {0}".format(source.url))
         if source.skipped:
             self._logger.debug("Source has been skipped")
             self._queues.lock.release()
@@ -270,7 +271,7 @@ class CopyvioWorkspace(object):
         else:
             self._queues = _CopyvioQueues()
             self._num_workers = num_workers
-            for i in xrange(num_workers):
+            for i in range(num_workers):
                 name = "local-{0:04}.{1}".format(id(self) % 10000, i)
                 _CopyvioWorker(name, self._queues, self._until).start()
 
@@ -332,22 +333,22 @@ class CopyvioWorkspace(object):
                 self.sources.append(source)
 
                 if exclude_check and exclude_check(url):
-                    self._logger.debug(u"enqueue(): exclude {0}".format(url))
+                    self._logger.debug("enqueue(): exclude {0}".format(url))
                     source.excluded = True
                     source.skip()
                     continue
                 if self._short_circuit and self.finished:
-                    self._logger.debug(u"enqueue(): auto-skip {0}".format(url))
+                    self._logger.debug("enqueue(): auto-skip {0}".format(url))
                     source.skip()
                     continue
 
                 try:
                     key = tldextract.extract(url).registered_domain
                 except ImportError:  # Fall back on very naive method
-                    from urlparse import urlparse
-                    key = u".".join(urlparse(url).netloc.split(".")[-2:])
+                    from urllib.parse import urlparse
+                    key = ".".join(urlparse(url).netloc.split(".")[-2:])
 
-                logmsg = u"enqueue(): {0} {1} -> {2}"
+                logmsg = "enqueue(): {0} {1} -> {2}"
                 if key in self._queues.sites:
                     self._logger.debug(logmsg.format("append", key, url))
                     self._queues.sites[key].append(source)
@@ -364,7 +365,7 @@ class CopyvioWorkspace(object):
             conf = self._calculate_confidence(delta)
         else:
             conf = 0.0
-        self._logger.debug(u"compare(): {0} -> {1}".format(source.url, conf))
+        self._logger.debug("compare(): {0} -> {1}".format(source.url, conf))
         with self._finish_lock:
             if source_chain:
                 source.update(conf, source_chain, delta)
@@ -383,7 +384,7 @@ class CopyvioWorkspace(object):
         with self._finish_lock:
             pass  # Wait for any remaining comparisons to be finished
         if not _is_globalized:
-            for i in xrange(self._num_workers):
+            for i in range(self._num_workers):
                 self._queues.unassigned.put((StopIteration, None))
 
     def get_result(self, num_queries=0):

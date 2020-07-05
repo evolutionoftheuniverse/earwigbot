@@ -278,7 +278,7 @@ class _PDFParser(_BaseTextParser):
     TYPE = "PDF"
     substitutions = [
         ("\x0c", "\n"),
-        ("\\u2022", " "),
+        ("\u2022", " "),
     ]
 
     def parse(self):

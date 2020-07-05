@@ -118,7 +118,7 @@ class Dictionary(Command):
         }
         blocks = "=" * (level + 1)
         defs = []
-        for part, basename in list(parts_of_speech.items()):
+        for part, basename in parts_of_speech.items():
             fullnames = [basename, "\{\{" + basename + "\}\}",
                          "\{\{" + basename.lower() + "\}\}"]
             for fullname in fullnames:

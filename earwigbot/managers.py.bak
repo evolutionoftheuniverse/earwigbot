@@ -69,7 +69,7 @@ class _ResourceManager(object):
 
     def __iter__(self):
         with self.lock:
-            for resource in list(self._resources.values()):
+            for resource in self._resources.values():
                 yield resource
 
     def _is_disabled(self, name):

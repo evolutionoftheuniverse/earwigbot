@@ -54,7 +54,7 @@ extra_deps = {
     ],
 }
 
-dependencies = required_deps + sum(extra_deps.values(), [])
+dependencies = required_deps + sum(list(extra_deps.values()), [])
 
 with open("README.rst") as fp:
     long_docs = fp.read()

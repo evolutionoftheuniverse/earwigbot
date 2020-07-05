@@ -89,7 +89,7 @@ class Remind(Command):
             else:
                 raise ValueError(node)
 
-        for unit, factor in list(time_units.items()):
+        for unit, factor in time_units.items():
             arg = arg.replace(unit, "*" + str(factor))
 
         try:
@@ -232,7 +232,7 @@ class Remind(Command):
         fmt = lambda robj, user: '\x0303{0}\x0F (for {1} {2}, {3})'.format(
             robj.id, user, dest(robj.data), robj.end_time)
 
-        rlist = (fmt(rem, user) for user, rems in list(self.reminders.items())
+        rlist = (fmt(rem, user) for user, rems in self.reminders.items()
                  for rem in rems)
         self.reply(data, "All reminders: {0}.".format(", ".join(rlist)))
 

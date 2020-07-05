@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from urllib import quote_plus
+from urllib.parse import quote_plus
 
 from earwigbot import exceptions
 from earwigbot.commands import Command
