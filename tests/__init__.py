@@ -120,7 +120,6 @@ class FakeBot(Bot):
         self.component_lock = Lock()
         self._keep_looping = True
         
-        self.config.load()
         self.commands.load()
         self.tasks.load()
 
