@@ -26,10 +26,10 @@ from earwigbot.commands.calc import Command
 from tests import CommandTestCase
 
 class TestCalc(CommandTestCase):
-
+        
     def setUp(self):
-        name="TestCalc"
         super(TestCalc, self).setUp(Command)
+        self.command.name="TestCalc"
         
     
     def test_check(self):
