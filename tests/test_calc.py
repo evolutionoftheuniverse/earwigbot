@@ -29,7 +29,6 @@ class TestCalc(CommandTestCase):
         
     def setUp(self):
         super(TestCalc, self).setUp(Command)
-        self.command.name="TestCalc"
         
     
     def test_check(self):
