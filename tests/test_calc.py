@@ -29,7 +29,9 @@ class TestCalc(CommandTestCase):
 
     def setUp(self):
         super(TestCalc, self).setUp(Command)
-
+        
+    name="TestCalc"
+    
     def test_check(self):
         self.assertFalse(self.command.check(self.make_msg("bloop")))
         self.assertFalse(self.command.check(self.make_join()))
@@ -54,8 +56,6 @@ class TestCalc(CommandTestCase):
             q = test[0].strip().split()
             self.command.process(self.make_msg("calc", *q))
             self.assertReply(test[1])
-    
-    name="TestCalc"
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
