@@ -4,10 +4,6 @@ environment:
   matrix:
   - PYTHON: "C:\\Python27\\python.exe"
   - TOXENV: py27
-  - TOXENV: py35
-  - TOXENV: py36
-  - TOXENV: py37
-  - TOXENV: py38
 
 build: off
 
