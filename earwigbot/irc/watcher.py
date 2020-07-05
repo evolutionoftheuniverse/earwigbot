@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import imp
+import importlib
 
 from earwigbot.irc import IRCConnection, RC
 
@@ -90,11 +90,11 @@ class Watcher(IRCConnection):
 
         path = self.bot.config.root_dir
         try:
-            f, path, desc = imp.find_module("rules", [path])
+            f, path, desc = importlib.find_module("rules", [path])
         except ImportError:
             return
         try:
-            module = imp.load_module("rules", f, path, desc)
+            module = importlib.load_module("rules", f, path, desc)
         except Exception:
             return
         finally:
