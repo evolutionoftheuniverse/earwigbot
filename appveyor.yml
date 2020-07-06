@@ -9,6 +9,7 @@ build: off
 
 install:
 #- pip install tox
+- pip install pytest
 - pip install coverage
 - pip install caniusepython3
 
