@@ -13,5 +13,5 @@ install:
 - pip install caniusepython3
 
 test_script:
-- coverage
-- caniusepython
+-coverage run -m pytest earwigbot
+-python setup.py caniusepython3
