@@ -9,7 +9,8 @@ build: off
 
 install:
 - pip install tox
-- pip install cython
+- pip install coverage
+- pip install caniusepython3
 
 test_script:
 - tox
