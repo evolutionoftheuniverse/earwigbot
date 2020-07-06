@@ -8,9 +8,10 @@ environment:
 build: off
 
 install:
-- pip install tox
+#- pip install tox
 - pip install coverage
 - pip install caniusepython3
 
 test_script:
-- tox
+- coverage
+- caniusepython
