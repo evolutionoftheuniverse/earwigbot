@@ -37,9 +37,9 @@ extra_deps = {
         "py-bcrypt >= 0.4",  # Hashing the bot key in the config file
         "pycrypto >= 2.6.1",  # Storing bot passwords + keys in the config file
     ],
-    "sql": [
-        "oursql >= 0.9.3.2",  # Interfacing with MediaWiki databases
-    ],
+#    "sql": [
+#        "oursql >= 0.9.3.2",  # Interfacing with MediaWiki databases
+#    ],
     "copyvios": [
         "beautifulsoup4 >= 4.6.0",  # Parsing/scraping HTML
         "cchardet >= 2.1.1",  # Encoding detection for BeautifulSoup
