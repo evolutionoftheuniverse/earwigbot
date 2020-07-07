@@ -1,5 +1,7 @@
 # appveyor.yml
 ---
+image:
+  -Ubuntu
 environment:
   matrix:
   - TOXENV: py25
@@ -13,6 +15,9 @@ install:
 - pip install pytest
 - pip install coverage
 - pip install caniusepython3
+- sudo apt-get install python-dev
+- sudo apt-get install libmysqlclient-dev
+- pip install cython
 
 test_script:
 - python setup.py install
