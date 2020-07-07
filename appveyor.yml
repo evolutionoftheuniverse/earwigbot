@@ -20,6 +20,6 @@ install:
 - pip install cython
 
 test_script:
-- python setup.py install
+- pip install tox
 - coverage run -m pytest earwigbot
 - caniusepython3 -p earwigbot
