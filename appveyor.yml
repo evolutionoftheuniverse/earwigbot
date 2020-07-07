@@ -15,8 +15,8 @@ install:
 - pip install pytest
 - pip install coverage
 - pip install caniusepython3
-- sudo apt-get install python-dev
-- sudo apt-get install libmysqlclient-dev
+- sh: sudo apt-get install python-dev
+- sh: sudo apt-get install libmysqlclient-dev
 - pip install cython
 
 test_script:
