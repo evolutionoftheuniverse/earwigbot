@@ -11,7 +11,7 @@ environment:
 build: off
 
 install:
-#- pip install tox
+- pip install tox
 - pip install pytest
 - pip install coverage
 - pip install caniusepython3
@@ -20,6 +20,6 @@ install:
 - pip install cython
 
 test_script:
-- pip install tox
+- tox
 - coverage run -m pytest earwigbot
 - caniusepython3 -p earwigbot
