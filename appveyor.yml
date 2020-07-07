@@ -11,15 +11,14 @@ environment:
 build: off
 
 install:
-- pip install tox
-- pip install pytest
-- pip install coverage
-- pip install caniusepython3
+#- pip install tox
+- pip install pytest --user
+- pip install coverage --user
+- pip install caniusepython3 --user
 - sh: sudo apt-get install python-dev
 #- sh: sudo apt-get install libmysqlclient-dev
 - pip install cython
 
 test_script:
-- tox
 - coverage run -m pytest earwigbot
 - caniusepython3 -p earwigbot
