@@ -17,7 +17,6 @@ install:
 - pip install caniusepython3
 - sh: sudo apt-get install python-dev
 #- sh: sudo apt-get install libmysqlclient-dev
-- sh: Y
 - pip install cython
 
 test_script:
