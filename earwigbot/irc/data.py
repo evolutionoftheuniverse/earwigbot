@@ -31,7 +31,8 @@ class Data(object):
         self._my_nick = my_nick.lower()
         self._line = line
         self._msgtype = msgtype
-
+        self._ident = None
+        self._host = None
         self._is_private = self._is_command = False
         self._msg = self._command = self._trigger = None
         self._args = []
