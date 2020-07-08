@@ -100,11 +100,11 @@ class CommandTestCase(TestCase):
         line = ":Foo!bar@example.com PRIVMSG #channel :!{0}".format(command)
         line = line.strip().split()
         line.extend(args)
-        return self.maker(line, line[2], " ".join(line[3:])[1:])
+        return self.maker(line, line[1], " ".join(line[3:])[1:])
 
     def make_join(self):
         line = ":Foo!bar@example.com JOIN :#channel".strip().split()
-        return self.maker(line, line[2][1:])
+        return self.maker(line, line[1][1:])
 
 
 class FakeBot(Bot):
