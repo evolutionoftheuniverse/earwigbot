@@ -88,7 +88,7 @@ class CommandTestCase(TestCase):
         self.assertSaidIn(msgs)
 
     def maker(self, line, chan, msg=None):
-        data = Data(line,chan,msg)
+        data = Data(chan,line,msg)
         data.nick, data.ident, data.host = self.re_sender.findall(line[0])[0]
         if msg is not None:
             data.msg = msg
