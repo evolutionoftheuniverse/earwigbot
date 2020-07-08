@@ -14,7 +14,6 @@
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -89,7 +88,9 @@ class CommandTestCase(TestCase):
 
     def maker(self, line, chan, msg=None):
         data = Data(chan,line,msg)
-        data.nick, data.ident, data.host = self.re_sender.findall(line[0])[0]
+        data.nick = self.re_sender.findall(line[0])[0][0]
+        data.ident = self.re_sender.findall(line[0])[0][1]
+        data.host = self.re_sender.findall(line[0])[0][2]
         if msg is not None:
             data.msg = msg
         data.chan = chan
