@@ -26,7 +26,8 @@ from time import gmtime, sleep
 
 from earwigbot import __version__
 from earwigbot.config import BotConfig
-from earwigbot.irc import Frontend, Watcher
+from earwigbot.irc import Watcher
+from earwigbot.irc.frontend import Frontend
 from earwigbot.managers import CommandManager, TaskManager
 from earwigbot.wiki import SitesDB
 
