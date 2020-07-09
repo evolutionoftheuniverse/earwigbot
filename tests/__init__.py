@@ -42,7 +42,6 @@ from os import path
 import re
 from threading import Lock
 from unittest import TestCase
-import argparse
 
 from earwigbot.bot import Bot
 from earwigbot.managers import CommandManager, TaskManager
@@ -95,7 +94,7 @@ class CommandTestCase(TestCase):
         if msg is not None:
             data.msg = msg
         data.chan = chan
-        data.parse_args()
+        data._parse_args()
         return data
 
     def make_msg(self, command, *args):
