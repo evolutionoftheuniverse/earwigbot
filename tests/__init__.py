@@ -42,6 +42,7 @@ from os import path
 import re
 from threading import Lock
 from unittest import TestCase
+import argparse
 
 from earwigbot.bot import Bot
 from earwigbot.managers import CommandManager, TaskManager
