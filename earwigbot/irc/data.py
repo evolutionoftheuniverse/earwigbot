@@ -31,8 +31,6 @@ class Data(object):
         self._my_nick = my_nick.lower()
         self._line = line
         self._msgtype = msgtype
-        self._ident = None
-        self._host = None
         self._is_private = self._is_command = False
         self._msg = self._command = self._trigger = None
         self._args = []
@@ -242,3 +240,13 @@ class Data(object):
     def unserialize(cls, data):
         """Return a new Data object built from a serialized tuple."""
         return cls(*data)
+    
+    @ident.setter
+    def set_ident(self,value):
+        """`Sets ident <http://en.wikipedia.org/wiki/Ident>`_ of the sender."""
+        self._ident=value
+        
+    @host.setter
+    def set_host(self,value):
+        """`Sets host <http://en.wikipedia.org/wiki/Host>`_ of the sender."""
+        self._host=value
