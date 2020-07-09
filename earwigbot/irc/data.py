@@ -242,11 +242,11 @@ class Data(object):
         return cls(*data)
     
     @ident.setter
-    def set_ident(self,value):
+    def ident(self,value):
         """`Sets ident <http://en.wikipedia.org/wiki/Ident>`_ of the sender."""
         self._ident=value
         
     @host.setter
-    def set_host(self,value):
+    def host(self,value):
         """`Sets host <http://en.wikipedia.org/wiki/Host>`_ of the sender."""
         self._host=value
