@@ -32,7 +32,7 @@ class Data(object):
         self._line = line
         self._msgtype = msgtype
         self._is_private = self._is_command = False
-        self._msg = self._command = self._trigger = None
+        self._command = self._trigger = None
         self._args = []
         self._kwargs = {}
 
