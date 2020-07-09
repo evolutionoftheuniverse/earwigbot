@@ -91,10 +91,10 @@ class CommandTestCase(TestCase):
         data = Data(reg[0],line,msg)
         data.ident = reg[1]
         data.host = reg[2]
+        data.chan = chan
         if msg is not None:
             data.msg = msg
-        data.chan = chan
-        data._parse_args()
+            data._parse_args()
         return data
 
     def make_msg(self, command, *args):
