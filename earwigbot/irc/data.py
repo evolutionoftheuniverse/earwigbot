@@ -46,7 +46,7 @@ class Data(object):
     def __setattr__(self, name, value):
         if name == "msg":
             self._msg = value
-         else:
+        else:
             self.__dict__[name] = value
 
     def __str__(self):
