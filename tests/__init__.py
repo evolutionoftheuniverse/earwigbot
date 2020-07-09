@@ -89,6 +89,8 @@ class CommandTestCase(TestCase):
     def maker(self, line, chan, msg=None):
         reg=self.re_sender.findall(line[0])[0]
         data = Data(reg[0],line,msg)
+        data.ident = reg[1]
+        data.host = reg[2]
         if msg is not None:
             data.msg = msg
         data.chan = chan
