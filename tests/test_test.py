@@ -40,7 +40,7 @@ class TestTest(CommandTestCase):
     def test_process(self):
         def test():
             self.command.process(self.make_msg("test"))
-            self.assertSaidIn([b"Hey \x02Foo\x0F!".decode("utf-8"), b"'sup \x02Foo\x0F?".decode("utf-8")])
+            self.assertSaidIn(["Hey \x02Foo\x0F!", "'sup \x02Foo\x0F?"])
 
         for i in range(64):
             test()
