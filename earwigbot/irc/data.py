@@ -32,7 +32,7 @@ class Data(object):
         self._line = line
         self._msgtype = msgtype
         self._is_private = self._is_command = False
-        self._command = self._trigger = None
+        self._msg = self._command = self._trigger = None
         self._args = []
         self._kwargs = {}
 
@@ -44,7 +44,10 @@ class Data(object):
         return res.format(self.my_nick, self.line)
     
     def __setattr__(self, name, value):
-         self.__dict__[name] = value
+        if name == "msg":
+            self._msg = value
+         else:
+            self.__dict__[name] = value
 
     def __str__(self):
         """Return a nice string representation of the Data."""
