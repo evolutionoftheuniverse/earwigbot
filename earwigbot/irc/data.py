@@ -42,6 +42,9 @@ class Data(object):
         """Return the canonical string representation of the Data."""
         res = "Data(my_nick={0!r}, line={1!r})"
         return res.format(self.my_nick, self.line)
+    
+    def __setattr__(self, name, value):
+         self.__dict__[name] = value
 
     def __str__(self):
         """Return a nice string representation of the Data."""
@@ -240,13 +243,3 @@ class Data(object):
     def unserialize(cls, data):
         """Return a new Data object built from a serialized tuple."""
         return cls(*data)
-    
-    @ident.setter
-    def ident(self,value):
-        """`Sets ident <http://en.wikipedia.org/wiki/Ident>`_ of the sender."""
-        self._ident=value
-        
-    @host.setter
-    def host(self,value):
-        """`Sets host <http://en.wikipedia.org/wiki/Host>`_ of the sender."""
-        self._host=value
