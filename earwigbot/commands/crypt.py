@@ -79,8 +79,8 @@ class Crypt(Command):
                     if len(text) % 8:
                         pad = 8 - len(text) % 8
                         text = text.ljust(len(text) + pad, "\x00")
-                    self.reply(data, cipher.encrypt(text).encode("hex"))
+                    self.reply(data, hex(cipher.encrypt(text)))
                 else:
-                    self.reply(data, cipher.decrypt(text.decode("hex")))
+                    self.reply(data, cipher.decrypt(bytes.fromhex(text).decode('utf-8')))
             except (ValueError, TypeError) as error:
                 self.reply(data, error.message)
