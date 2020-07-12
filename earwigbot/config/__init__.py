@@ -292,7 +292,7 @@ class BotConfig(object):
                     raise NoConfigError(e.format(url1, url2))
                 key = getpass("Enter key to decrypt bot passwords: ")
                 key = bytes(key, 'utf-8')
-                self._decryption_cipher = blowfish_new(sha256(key).digest())
+                self._decryption_cipher = blowfish_new(sha256(key).digest(), Blowfish.MODE_CBC)
                 signature = self.metadata["signature"]
                 if hashpw(key, signature) != signature:
                     raise RuntimeError("Incorrect password.")
