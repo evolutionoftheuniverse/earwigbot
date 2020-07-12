@@ -79,7 +79,8 @@ class ConfigNode(object):
             except KeyError:
                 return
         if item in base:
-            ciphertext = bytes.fromhex(base[item]).decode('utf-8')
+            ciphertext = bytes(int.fromhex(base[item]))
+            #hex(int.from_bytes(self._cipher.encrypt(password), byteorder="big"))
             base[item] = cipher.decrypt(ciphertext).rstrip("\x00")
 
     def get(self, *args, **kwargs):
