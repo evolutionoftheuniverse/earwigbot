@@ -154,7 +154,7 @@ class ConfigScript(object):
             try:
                 salt = bcrypt.gensalt(self.BCRYPT_ROUNDS)
                 signature = bcrypt.hashpw(key, salt)
-                self._cipher = Blowfish.new(sha256(key).digest())
+                self._cipher = Blowfish.new(sha256(key.encode('utf-8')).digest())
             except ImportError:
                 print(" error!")
                 self._print("""Encryption requires the 'py-bcrypt' and
