@@ -154,11 +154,11 @@ class ConfigScript(object):
             try:
                 salt = bcrypt.gensalt(self.BCRYPT_ROUNDS)
                 signature = bcrypt.hashpw(key, salt)
-                self._cipher = Blowfish.new(sha256(key.encode('utf-8')).digest())
+                self._cipher = Blowfish.new(sha256(key.encode('utf-8')).digest(), AES.MODE_ECB)
             except ImportError:
                 print(" error!")
                 self._print("""Encryption requires the 'py-bcrypt' and
-                               'pycrypto' packages:""")
+                               'pycryptodome' packages:""")
                 strt, end = " * \x1b[36m", "\x1b[0m"
                 print((strt + "http://www.mindrot.org/projects/py-bcrypt/" + end))
                 print((strt + "https://www.dlitz.net/software/pycrypto/" + end))
