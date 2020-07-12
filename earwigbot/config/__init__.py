@@ -111,7 +111,7 @@ class BotConfig(object):
     def _handle_missing_config(self):
         print(("Config file missing or empty:", self._config_path))
         msg = "Would you like to create a config file now? [Y/n] "
-        choice = eval(input(msg))
+        choice = input(msg)
         if choice.lower().startswith("n"):
             raise NoConfigError()
         else:
