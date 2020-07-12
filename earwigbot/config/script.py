@@ -149,12 +149,13 @@ class ConfigScript(object):
         self.data["metadata"]["encryptPasswords"] = False
         if self._ask_bool("Encrypt stored passwords?"):
             key = getpass(self.PROMPT + "Enter an encryption key: ")
+            key = bytes(key, 'utf-8')
             msg = "Running {0} rounds of bcrypt...".format(self.BCRYPT_ROUNDS)
             self._print_no_nl(msg)
             try:
                 salt = bcrypt.gensalt(self.BCRYPT_ROUNDS)
                 signature = bcrypt.hashpw(key, salt)
-                self._cipher = Blowfish.new(sha256(key.encode('utf-8')).digest(), Blowfish.MODE_CBC)
+                self._cipher = Blowfish.new(sha256(key).digest(), Blowfish.MODE_CBC)
             except ImportError:
                 print(" error!")
                 self._print("""Encryption requires the 'py-bcrypt' and
