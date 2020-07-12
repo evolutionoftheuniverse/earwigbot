@@ -123,7 +123,7 @@ class ConfigScript(object):
             mod = len(password) % 8
             if mod:
                 password = password.ljust(len(password) + (8 - mod), "\x00")
-            return hex(int.from_bytes(self._cipher.encrypt(password)))
+            return hex(int.from_bytes(self._cipher.encrypt(password), byteorder="big"))
         else:
             return password
 
