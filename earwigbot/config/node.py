@@ -79,7 +79,7 @@ class ConfigNode(object):
             except KeyError:
                 return
         if item in base:
-            ciphertext = bytes(int.fromhex(base[item]))
+            ciphertext = bytes(int(base[item], 16))
             #hex(int.from_bytes(self._cipher.encrypt(password), byteorder="big"))
             base[item] = cipher.decrypt(ciphertext).rstrip("\x00")
 
