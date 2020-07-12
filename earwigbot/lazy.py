@@ -31,6 +31,7 @@ from imp import acquire_lock, release_lock
 import sys
 from threading import RLock
 from types import ModuleType
+import importlib
 
 __all__ = ["LazyImporter"]
 
@@ -46,7 +47,7 @@ def _mock_get(self, attr):
         if _real_get(self, "_unloaded"):
             type(self)._unloaded = False
             try:
-                reload(self)
+                importlib.reload(self)
             except ImportError as exc:
                 type(self).__getattribute__ = _create_failing_get(exc)
                 del type(self)._lock

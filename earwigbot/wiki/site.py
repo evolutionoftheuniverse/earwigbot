@@ -20,14 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from cookielib import CookieJar
+from http.cookiejar import CookieJar
 from json import dumps
 from logging import getLogger, NullHandler
 from os.path import expanduser
 from threading import RLock
 from time import sleep, time
-from urllib import unquote_plus
-from urlparse import urlparse
+from urllib.parse import unquote_plus
+from urllib.parse import urlparse
 
 import requests
 from requests_oauthlib import OAuth1
@@ -38,7 +38,7 @@ from earwigbot.wiki.category import Category
 from earwigbot.wiki.page import Page
 from earwigbot.wiki.user import User
 
-oursql = importer.new("oursql")
+pymysql = importer.new("pymysql")
 
 __all__ = ["Site"]
 
@@ -208,9 +208,9 @@ class Site(object):
 
     def _unicodeify(self, value, encoding="utf8"):
         """Return input as unicode if it's not unicode to begin with."""
-        if isinstance(value, unicode):
+        if isinstance(value, str):
             return value
-        return unicode(value, encoding)
+        return str(value, encoding)
 
     def _api_query(self, params, tries=0, wait=5, ignore_maxlag=False,
                    no_assert=False, ae_retry=True):
@@ -286,7 +286,7 @@ class Site(object):
             raise exceptions.APIError(e)
 
         if "warnings" in res:
-            for name, value in res["warnings"].items():
+            for name, value in list(res["warnings"].items()):
                 try:
                     warning = value["warnings"]
                 except KeyError:
@@ -304,7 +304,7 @@ class Site(object):
             info = res["error"]["info"]
         except (TypeError, KeyError):  # If there's no error code/info, return
             if "query" in res and "tokens" in res["query"]:
-                for name, token in res["query"]["tokens"].iteritems():
+                for name, token in list(res["query"]["tokens"].items()):
                     self._tokens[name.split("token")[0]] = token
             return res
 
@@ -381,7 +381,7 @@ class Site(object):
         """
         self._namespaces = {}
 
-        for namespace in result["query"]["namespaces"].values():
+        for namespace in list(result["query"]["namespaces"].values()):
             ns_id = namespace["id"]
             name = namespace["*"]
             try:
@@ -574,7 +574,7 @@ class Site(object):
         establish a connection.
         """
         args = self._sql_data
-        for key, value in kwargs.iteritems():
+        for key, value in list(kwargs.items()):
             args[key] = value
         if "read_default_file" not in args and "user" not in args and "passwd" not in args:
             args["read_default_file"] = expanduser("~/.my.cnf")
@@ -586,9 +586,9 @@ class Site(object):
             args["autoreconnect"] = True
 
         try:
-            self._sql_conn = oursql.connect(**args)
+            self._sql_conn = pymysql.connect(**args)
         except ImportError:
-            e = "SQL querying requires the 'oursql' package: http://packages.python.org/oursql/"
+            e = "SQL querying requires the 'pymysql' package: http://packages.python.org/pymysql/"
             raise exceptions.SQLError(e)
 
     def _get_service_order(self):
@@ -610,7 +610,7 @@ class Site(object):
             self._sql_info_cache["lastcheck"] = now
             try:
                 self._sql_info_cache["replag"] = sqllag = self.get_replag()
-            except (exceptions.SQLError, oursql.Error):
+            except (exceptions.SQLError, pymysql.Error):
                 self._sql_info_cache["usable"] = False
                 return [self.SERVICE_API]
             self._sql_info_cache["usable"] = True
@@ -747,9 +747,9 @@ class Site(object):
         """
         if not cursor_class:
             if dict_cursor:
-                cursor_class = oursql.DictCursor
+                cursor_class = pymysql.cursors.DictCursor
             else:
-                cursor_class = oursql.Cursor
+                cursor_class = pymysql.cursors.Cursor
         klass = cursor_class
 
         with self._sql_lock:
@@ -860,12 +860,12 @@ class Site(object):
         name is not found.
         """
         lname = name.lower()
-        for ns_id, names in self._namespaces.items():
+        for ns_id, names in list(self._namespaces.items()):
             lnames = [n.lower() for n in names]  # Be case-insensitive
             if lname in lnames:
                 return ns_id
 
-        e = u"There is no namespace with name '{0}'.".format(name)
+        e = "There is no namespace with name '{0}'.".format(name)
         raise exceptions.NamespaceNotFoundError(e)
 
     def get_page(self, title, follow_redirects=False, pageid=None):
@@ -900,7 +900,7 @@ class Site(object):
         """
         catname = self._unicodeify(catname)
         prefix = self.namespace_id_to_name(constants.NS_CATEGORY)
-        pagename = u':'.join((prefix, catname))
+        pagename = ':'.join((prefix, catname))
         return Category(self, pagename, follow_redirects, pageid, self._logger)
 
     def get_user(self, username=None):

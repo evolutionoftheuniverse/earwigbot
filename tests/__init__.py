@@ -14,7 +14,6 @@
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -45,15 +44,14 @@ from threading import Lock
 from unittest import TestCase
 
 from earwigbot.bot import Bot
-from earwigbot.commands import CommandManager
+from earwigbot.managers import CommandManager, TaskManager
 from earwigbot.config import BotConfig
 from earwigbot.irc import IRCConnection, Data
-from earwigbot.tasks import TaskManager
 from earwigbot.wiki import SitesDB
 
 class CommandTestCase(TestCase):
     re_sender = re.compile(":(.*?)!(.*?)@(.*?)\Z")
-
+    
     def setUp(self, command):
         self.bot = FakeBot(path.dirname(__file__))
         self.command = command(self.bot)
@@ -89,12 +87,14 @@ class CommandTestCase(TestCase):
         self.assertSaidIn(msgs)
 
     def maker(self, line, chan, msg=None):
-        data = Data(line)
-        data.nick, data.ident, data.host = self.re_sender.findall(line[0])[0]
+        reg=self.re_sender.findall(line[0])[0]
+        data = Data(reg[0],line,msg)
+        data.ident = reg[1]
+        data.host = reg[2]
+        data.chan = chan
         if msg is not None:
             data.msg = msg
-        data.chan = chan
-        data.parse_args()
+            data._parse_args()
         return data
 
     def make_msg(self, command, *args):
@@ -110,7 +110,7 @@ class CommandTestCase(TestCase):
 
 class FakeBot(Bot):
     def __init__(self, root_dir):
-        self.config = FakeBotConfig(root_dir)
+        self.config = FakeBotConfig(self, root_dir, level=20)
         self.logger = logging.getLogger("earwigbot")
         self.commands = CommandManager(self)
         self.tasks = TaskManager(self)

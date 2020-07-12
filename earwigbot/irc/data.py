@@ -31,7 +31,6 @@ class Data(object):
         self._my_nick = my_nick.lower()
         self._line = line
         self._msgtype = msgtype
-
         self._is_private = self._is_command = False
         self._msg = self._command = self._trigger = None
         self._args = []
@@ -43,6 +42,12 @@ class Data(object):
         """Return the canonical string representation of the Data."""
         res = "Data(my_nick={0!r}, line={1!r})"
         return res.format(self.my_nick, self.line)
+    
+    def __setattr__(self, name, value):
+        if name == "msg":
+            self._msg = value
+        else:
+            self.__dict__[name] = value
 
     def __str__(self):
         """Return a nice string representation of the Data."""

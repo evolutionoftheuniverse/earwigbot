@@ -63,23 +63,23 @@ class Dictionary(Command):
 
         level, languages = self.get_languages(entry)
         if not languages:
-            return u"Couldn't parse {0}!".format(page.url)
+            return "Couldn't parse {0}!".format(page.url)
 
         if "#" in term:  # Requesting a specific language
             lcase_langs = {lang.lower(): lang for lang in languages}
             request = term.rsplit("#", 1)[1]
             lang = lcase_langs.get(request.lower())
             if not lang:
-                resp = u"Language {0} not found in definition."
+                resp = "Language {0} not found in definition."
                 return resp.format(request)
             definition = self.get_definition(languages[lang], level)
-            return u"({0}) {1}".format(lang, definition)
+            return "({0}) {1}".format(lang, definition)
 
         result = []
         for lang, section in sorted(languages.items()):
             definition = self.get_definition(section, level)
-            result.append(u"({0}) {1}".format(lang, definition))
-        return u"; ".join(result)
+            result.append("({0}) {1}".format(lang, definition))
+        return "; ".join(result)
 
     def get_languages(self, entry, level=2):
         regex = r"(?:\A|\n)==\s*([a-zA-Z0-9_ ]*?)\s*==(?:\Z|\n)"
@@ -93,7 +93,7 @@ class Dictionary(Command):
 
         split.pop(0)
         languages = {}
-        for i in xrange(0, len(split), 2):
+        for i in range(0, len(split), 2):
             languages[split[i]] = split[i + 1]
         return level, languages
 
@@ -118,7 +118,7 @@ class Dictionary(Command):
         }
         blocks = "=" * (level + 1)
         defs = []
-        for part, basename in parts_of_speech.iteritems():
+        for part, basename in list(parts_of_speech.items()):
             fullnames = [basename, "\{\{" + basename + "\}\}",
                          "\{\{" + basename.lower() + "\}\}"]
             for fullname in fullnames:
@@ -131,7 +131,7 @@ class Dictionary(Command):
                         for body in bodies:
                             definition = self.parse_body(body)
                             if definition:
-                                msg = u"\x02{0}\x0F {1}"
+                                msg = "\x02{0}\x0F {1}"
                                 defs.append(msg.format(part, definition))
 
         return "; ".join(defs)
@@ -167,7 +167,7 @@ class Dictionary(Command):
 
         result = []  # Number the senses incrementally
         for i, sense in enumerate(senses):
-            result.append(u"{0}. {1}".format(i + 1, sense))
+            result.append("{0}. {1}".format(i + 1, sense))
         return " ".join(result)
 
     def strip_templates(self, line):

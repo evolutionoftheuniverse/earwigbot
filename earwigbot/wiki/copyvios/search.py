@@ -24,9 +24,9 @@ from gzip import GzipFile
 from json import loads
 from re import sub as re_sub
 from socket import error
-from StringIO import StringIO
-from urllib import quote, urlencode
-from urllib2 import URLError
+from io import StringIO
+from urllib.parse import quote, urlencode
+from urllib.error import URLError
 
 from earwigbot import importer
 from earwigbot.exceptions import SearchQueryError
@@ -176,7 +176,7 @@ class YahooBOSSSearchEngine(_BaseSearchEngine):
     def _build_url(base, params):
         """Works like urllib.urlencode(), but uses %20 for spaces over +."""
         enc = lambda s: quote(s.encode("utf8"), safe="")
-        args = ["=".join((enc(k), enc(v))) for k, v in params.iteritems()]
+        args = ["=".join((enc(k), enc(v))) for k, v in list(params.items())]
         return base + "?" + "&".join(args)
 
     @staticmethod

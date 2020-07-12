@@ -69,7 +69,7 @@ class _ResourceManager(object):
 
     def __iter__(self):
         with self.lock:
-            for resource in self._resources.itervalues():
+            for resource in list(self._resources.values()):
                 yield resource
 
     def _is_disabled(self, name):
@@ -117,7 +117,7 @@ class _ResourceManager(object):
         finally:
             f.close()
 
-        for obj in vars(module).values():
+        for obj in list(vars(module).values()):
             if type(obj) is type:
                 isresource = issubclass(obj, self._resource_base)
                 if isresource and not obj is self._resource_base:
@@ -181,7 +181,7 @@ class _ResourceManager(object):
 
         if self._resources:
             msg = "Loaded {0} {1}: {2}"
-            resources = ", ".join(self._resources.keys())
+            resources = ", ".join(list(self._resources.keys()))
             self.logger.info(msg.format(len(self._resources), name, resources))
         else:
             self.logger.info("Loaded 0 {0}".format(name))

@@ -22,7 +22,7 @@
 
 from os import path
 import re
-from StringIO import StringIO
+from io import StringIO
 
 import mwparserfromhell
 
@@ -89,8 +89,8 @@ class ArticleTextParser(_BaseTextParser):
                     self._merge_templates(param.value)
                     chunks.append(param.value)
             if chunks:
-                subst = u" ".join(map(unicode, chunks))
-                code.replace(template, u" " + subst + u" ")
+                subst = " ".join(map(str, chunks))
+                code.replace(template, " " + subst + " ")
             else:
                 code.remove(template)
 
@@ -219,7 +219,7 @@ class ArticleTextParser(_BaseTextParser):
         """
         schemes = ("http://", "https://")
         links = mwparserfromhell.parse(self.text).ifilter_external_links()
-        return [unicode(link.url) for link in links
+        return [str(link.url) for link in links
                 if link.url.startswith(schemes)]
 
 
@@ -277,8 +277,8 @@ class _PDFParser(_BaseTextParser):
     """A parser that can extract text from a PDF file."""
     TYPE = "PDF"
     substitutions = [
-        (u"\x0c", u"\n"),
-        (u"\u2022", u" "),
+        ("\x0c", "\n"),
+        ("\\u2022", " "),
     ]
 
     def parse(self):

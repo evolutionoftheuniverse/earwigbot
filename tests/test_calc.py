@@ -26,10 +26,11 @@ from earwigbot.commands.calc import Command
 from tests import CommandTestCase
 
 class TestCalc(CommandTestCase):
-
+        
     def setUp(self):
         super(TestCalc, self).setUp(Command)
-
+        
+    
     def test_check(self):
         self.assertFalse(self.command.check(self.make_msg("bloop")))
         self.assertFalse(self.command.check(self.make_join()))

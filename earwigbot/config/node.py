@@ -31,7 +31,7 @@ class ConfigNode(object):
     def __repr__(self):
         return self._data
 
-    def __nonzero__(self):
+    def __bool__(self):
         return bool(self._data)
 
     def __len__(self):
@@ -63,7 +63,7 @@ class ConfigNode(object):
 
     def _dump(self):
         data = self._data.copy()
-        for key, val in data.iteritems():
+        for key, val in list(data.items()):
             if isinstance(val, ConfigNode):
                 data[key] = val._dump()
         return data
@@ -86,19 +86,19 @@ class ConfigNode(object):
         return self._data.get(*args, **kwargs)
 
     def keys(self):
-        return self._data.keys()
+        return list(self._data.keys())
 
     def values(self):
-        return self._data.values()
+        return list(self._data.values())
 
     def items(self):
-        return self._data.items()
+        return list(self._data.items())
 
     def iterkeys(self):
-        return self._data.iterkeys()
+        return iter(list(self._data.keys()))
 
     def itervalues(self):
-        return self._data.itervalues()
+        return iter(list(self._data.values()))
 
     def iteritems(self):
-        return self._data.iteritems()
+        return iter(list(self._data.items()))

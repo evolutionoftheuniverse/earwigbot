@@ -26,7 +26,8 @@ from time import gmtime, sleep
 
 from earwigbot import __version__
 from earwigbot.config import BotConfig
-from earwigbot.irc import Frontend, Watcher
+from earwigbot.irc.frontend import Frontend
+from earwigbot.irc.watcher import Watcher
 from earwigbot.managers import CommandManager, TaskManager
 from earwigbot.wiki import SitesDB
 
@@ -147,7 +148,7 @@ class Bot(object):
         advance warning of their forced shutdown.
         """
         tasks = []
-        component_names = self.config.components.keys()
+        component_names = list(self.config.components.keys())
         skips = component_names + ["MainThread", "reminder", "irc:quit"]
         for thread in enumerate_threads():
             if thread.is_alive() and not any(

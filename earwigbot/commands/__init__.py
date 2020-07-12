@@ -37,7 +37,7 @@ class Command(object):
     <command>"``.
     """
     # The command's name, as reported to the user when they use !help:
-    name = None
+    name = ""
 
     # A list of names that will trigger this command. If left empty, it will
     # be triggered by the command's name and its name only:

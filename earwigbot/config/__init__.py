@@ -109,9 +109,9 @@ class BotConfig(object):
         return "<BotConfig at {0}>".format(self.root_dir)
 
     def _handle_missing_config(self):
-        print "Config file missing or empty:", self._config_path
+        print(("Config file missing or empty:", self._config_path))
         msg = "Would you like to create a config file now? [Y/n] "
-        choice = raw_input(msg)
+        choice = input(msg)
         if choice.lower().startswith("n"):
             raise NoConfigError()
         else:
@@ -127,7 +127,7 @@ class BotConfig(object):
             try:
                 self._data = yaml.load(fp, OrderedLoader)
             except yaml.YAMLError:
-                print "Error parsing config file {0}:".format(filename)
+                print(("Error parsing config file {0}:".format(filename)))
                 raise
 
     def _setup_logging(self):
@@ -148,7 +148,7 @@ class BotConfig(object):
                     mkdir(log_dir, stat.S_IWUSR|stat.S_IRUSR|stat.S_IXUSR)
                 else:
                     msg = "log_dir ({0}) exists but is not a directory!"
-                    print msg.format(log_dir)
+                    print((msg.format(log_dir)))
                     return
 
             main_handler = hand(logfile("bot.log"), "midnight", 1, 7)
@@ -173,7 +173,7 @@ class BotConfig(object):
         try:
             node._decrypt(self._decryption_cipher, nodes[:-1], nodes[-1])
         except ValueError:
-            print "Error decrypting passwords:"
+            print("Error decrypting passwords:")
             raise
 
     @property
@@ -340,7 +340,7 @@ class BotConfig(object):
         data = self._data.get("schedule", [])
         for event in data:
             do = True
-            for key, value in now.items():
+            for key, value in list(now.items()):
                 try:
                     requirement = event[key]
                 except KeyError:

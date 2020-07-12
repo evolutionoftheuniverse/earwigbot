@@ -41,8 +41,8 @@ class OrderedLoader(yaml.Loader):
     def __init__(self, *args, **kwargs):
         super(OrderedLoader, self).__init__(*args, **kwargs)
         constructor = type(self).construct_yaml_map
-        self.add_constructor(u"tag:yaml.org,2002:map", constructor)
-        self.add_constructor(u"tag:yaml.org,2002:omap", constructor)
+        self.add_constructor("tag:yaml.org,2002:map", constructor)
+        self.add_constructor("tag:yaml.org,2002:omap", constructor)
 
     def construct_yaml_map(self, node):
         data = OrderedDict()
@@ -63,7 +63,7 @@ class OrderedLoader(yaml.Loader):
             key = self.construct_object(key_node, deep=deep)
             try:
                 hash(key)
-            except TypeError, exc:
+            except TypeError as exc:
                 raise yaml.constructor.ConstructorError(
                     "while constructing a mapping", node.start_mark,
                     "found unacceptable key ({0})".format(exc),

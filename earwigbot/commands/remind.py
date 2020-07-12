@@ -80,7 +80,7 @@ class Remind(Command):
         def _evaluate(node):
             """Convert an AST node into a real number or raise an exception."""
             if isinstance(node, ast.Num):
-                if not isinstance(node.n, (int, long, float)):
+                if not isinstance(node.n, (int, float)):
                     raise ValueError(node.n)
                 return node.n
             elif isinstance(node, ast.BinOp):
@@ -89,7 +89,7 @@ class Remind(Command):
             else:
                 raise ValueError(node)
 
-        for unit, factor in time_units.iteritems():
+        for unit, factor in list(time_units.items()):
             arg = arg.replace(unit, "*" + str(factor))
 
         try:
@@ -112,7 +112,7 @@ class Remind(Command):
 
     def _get_new_id(self):
         """Get a free ID for a new reminder."""
-        taken = set(robj.id for robj in chain(*self.reminders.values()))
+        taken = set(robj.id for robj in chain(*list(self.reminders.values())))
         num = random.choice(list(set(range(4096)) - taken))
         return "R{0:03X}".format(num)
 
@@ -232,7 +232,7 @@ class Remind(Command):
         fmt = lambda robj, user: '\x0303{0}\x0F (for {1} {2}, {3})'.format(
             robj.id, user, dest(robj.data), robj.end_time)
 
-        rlist = (fmt(rem, user) for user, rems in self.reminders.iteritems()
+        rlist = (fmt(rem, user) for user, rems in list(self.reminders.items())
                  for rem in rems)
         self.reply(data, "All reminders: {0}.".format(", ".join(rlist)))
 
@@ -378,7 +378,7 @@ class _ReminderThread(object):
 
     def _get_soonest(self):
         """Get the soonest reminder to trigger."""
-        return min(self._active.values(), key=lambda robj: robj.end)
+        return min(list(self._active.values()), key=lambda robj: robj.end)
 
     def _get_ready_reminder(self):
         """Block until a reminder is ready to be triggered."""

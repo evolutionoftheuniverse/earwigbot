@@ -26,7 +26,7 @@ from earwigbot.commands.test import Command
 from tests import CommandTestCase
 
 class TestTest(CommandTestCase):
-
+        
     def setUp(self):
         super(TestTest, self).setUp(Command)
 
@@ -42,7 +42,7 @@ class TestTest(CommandTestCase):
             self.command.process(self.make_msg("test"))
             self.assertSaidIn(["Hey \x02Foo\x0F!", "'sup \x02Foo\x0F?"])
 
-        for i in xrange(64):
+        for i in range(64):
             test()
 
 if __name__ == "__main__":

@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 import re
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from earwigbot.commands import Command
 
@@ -39,8 +39,8 @@ class Calc(Command):
         query = self.cleanup(query)
 
         url = "http://futureboy.us/fsp/frink.fsp?fromVal={0}"
-        url = url.format(urllib.quote(query))
-        result = urllib.urlopen(url).read()
+        url = url.format(urllib.parse.quote(query))
+        result = urllib.request.urlopen(url).read()
 
         r_result = re.compile(r'(?i)<A NAME=results>(.*?)</A>')
         r_tag = re.compile(r'<\S+.*?>')
@@ -68,8 +68,8 @@ class Calc(Command):
         fixes = [
             (' in ', ' -> '),
             (' over ', ' / '),
-            (u'¬£', 'GBP '),
-            (u'‚Ç¨', 'EUR '),
+            ('¬£', 'GBP '),
+            ('‚Ç¨', 'EUR '),
             ('\$', 'USD '),
             (r'\bKB\b', 'kilobytes'),
             (r'\bMB\b', 'megabytes'),

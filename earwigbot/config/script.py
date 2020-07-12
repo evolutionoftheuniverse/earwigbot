@@ -72,14 +72,14 @@ class ConfigScript(object):
         self._lang = None
 
     def _print(self, text):
-        print fill(re.sub("\s\s+", " ", text), self.WIDTH)
+        print((fill(re.sub("\s\s+", " ", text), self.WIDTH)))
 
     def _print_no_nl(self, text):
         sys.stdout.write(fill(re.sub("\s\s+", " ", text), self.WIDTH))
         sys.stdout.flush()
 
     def _pause(self):
-        raw_input(self.PROMPT + "Press enter to continue: ")
+        eval(input(self.PROMPT + "Press enter to continue: "))
 
     def _ask(self, text, default=None, require=True):
         text = self.PROMPT + text
@@ -87,9 +87,9 @@ class ConfigScript(object):
             text += " \x1b[33m[{0}]\x1b[0m".format(default)
         lines = wrap(re.sub("\s\s+", " ", text), self.WIDTH)
         if len(lines) > 1:
-            print "\n".join(lines[:-1])
+            print(("\n".join(lines[:-1])))
         while True:
-            answer = raw_input(lines[-1] + " ") or default
+            answer = eval(input(lines[-1] + " ")) or default
             if answer or not require:
                 return answer
 
@@ -101,9 +101,9 @@ class ConfigScript(object):
             text += " \x1b[33m[y/N]\x1b[0m"
         lines = wrap(re.sub("\s\s+", " ", text), self.WIDTH)
         if len(lines) > 1:
-            print "\n".join(lines[:-1])
+            print(("\n".join(lines[:-1])))
         while True:
-            answer = raw_input(lines[-1] + " ").lower()
+            answer = input(lines[-1] + " ").lower()
             if not answer:
                 return default
             if answer.startswith("y"):
@@ -127,18 +127,18 @@ class ConfigScript(object):
             return password
 
     def _ask_list(self, text):
-        print fill(re.sub("\s\s+", " ", self.PROMPT + text), self.WIDTH)
-        print "[one item per line; blank line to end]:"
+        print((fill(re.sub("\s\s+", " ", self.PROMPT + text), self.WIDTH)))
+        print("[one item per line; blank line to end]:")
         result = []
         while True:
-            line = raw_input(self.PROMPT)
+            line = eval(input(self.PROMPT))
             if line:
                 result.append(line)
             else:
                 return result
 
     def _set_metadata(self):
-        print
+        print()
         self.data["metadata"] = OrderedDict([("version", 1)])
         self._print("""I can encrypt passwords stored in your config file in
                        addition to preventing other users on your system from
@@ -154,14 +154,14 @@ class ConfigScript(object):
             try:
                 salt = bcrypt.gensalt(self.BCRYPT_ROUNDS)
                 signature = bcrypt.hashpw(key, salt)
-                self._cipher = Blowfish.new(sha256(key).digest(), AES.MODE_ECB)
+                self._cipher = Blowfish.new(sha256(key.encode('utf-8')).digest(), AES.MODE_ECB)
             except ImportError:
-                print " error!"
+                print(" error!")
                 self._print("""Encryption requires the 'py-bcrypt' and
                                'pycryptodome' packages:""")
                 strt, end = " * \x1b[36m", "\x1b[0m"
-                print strt + "http://www.mindrot.org/projects/py-bcrypt/" + end
-                print strt + "https://www.dlitz.net/software/pycrypto/" + end
+                print((strt + "http://www.mindrot.org/projects/py-bcrypt/" + end))
+                print((strt + "https://www.dlitz.net/software/pycrypto/" + end))
                 self._print("""I will disable encryption for now; restart
                                configuration after installing these packages if
                                you want it.""")
@@ -169,9 +169,9 @@ class ConfigScript(object):
             else:
                 self.data["metadata"]["encryptPasswords"] = True
                 self.data["metadata"]["signature"] = signature
-                print " done."
+                print(" done.")
 
-        print
+        print()
         self._print("""The bot can temporarily store its logs in the logs/
                        subdirectory. Error logs are kept for a month whereas
                        normal logs are kept for a week. If you disable this,
@@ -180,7 +180,7 @@ class ConfigScript(object):
         self.data["metadata"]["enableLogging"] = logging
 
     def _set_components(self):
-        print
+        print()
         self._print("""The bot contains three separate components that can run
                        independently of each other.""")
         self._print("""- The IRC front-end runs on a normal IRC server, like
@@ -209,8 +209,8 @@ class ConfigScript(object):
         try:
             site = self.config.bot.wiki.add_site(**kwargs)
         except exceptions.APIError as exc:
-            print " API error!"
-            print "\x1b[31m" + exc.message + "\x1b[0m"
+            print(" API error!")
+            print(("\x1b[31m" + exc.message + "\x1b[0m"))
             question = "Would you like to re-enter the site information?"
             if self._ask_bool(question):
                 return self._set_wiki()
@@ -219,8 +219,8 @@ class ConfigScript(object):
                 raise exceptions.NoConfigError()
             return self._set_wiki()
         except exceptions.LoginError as exc:
-            print " login error!"
-            print "\x1b[31m" + exc.message + "\x1b[0m"
+            print(" login error!")
+            print(("\x1b[31m" + exc.message + "\x1b[0m"))
             question = "Would you like to re-enter your login information?"
             if self._ask_bool(question):
                 self.data["wiki"]["username"] = self._ask("Bot username:")
@@ -232,17 +232,17 @@ class ConfigScript(object):
             question = "Would you like to re-enter the site information?"
             if self._ask_bool(question):
                 return self._set_wiki()
-            print
+            print()
             self._print("""Moving on. You can modify the login information
                            stored in the bot's config in the future.""")
             self.data["wiki"]["password"] = None  # Clear so we don't login
             self.config.wiki._load(self.data["wiki"])
             self._print_no_nl("Trying to connect to the site...")
             site = self.config.bot.wiki.add_site(**kwargs)
-            print " success."
+            print(" success.")
             self.data["wiki"]["password"] = password  # Reset original value
         else:
-            print " success."
+            print(" success.")
 
         # Remember to store the encrypted password:
         password = self._encrypt(self.data["wiki"]["password"])
@@ -250,7 +250,7 @@ class ConfigScript(object):
         return site
 
     def _set_wiki(self):
-        print
+        print()
         self._wmf = self._ask_bool("""Will this bot run on Wikimedia Foundation
                                       wikis, like Wikipedia?""")
         if self._wmf:
@@ -296,7 +296,7 @@ class ConfigScript(object):
         self.data["wiki"]["shutoff"] = {}
         msg = "Would you like to enable an automatic shutoff page for the bot?"
         if self._ask_bool(msg):
-            print
+            print()
             self._print("""The page title can contain two wildcards: $1 will be
                            substituted with the bot's username, and $2 with the
                            current task number. This can be used to implement a
@@ -311,7 +311,7 @@ class ConfigScript(object):
 
     def _set_irc(self):
         if self.data["components"]["irc_frontend"]:
-            print
+            print()
             frontend = self.data["irc"]["frontend"] = OrderedDict()
             msg = "Hostname of the frontend's IRC server, without 'irc://':"
             frontend["host"] = self._ask(msg, "irc.freenode.net")
@@ -328,7 +328,7 @@ class ConfigScript(object):
                 frontend["nickservPassword"] = ns_pass
             chan_question = "Frontend channels to join by default:"
             frontend["channels"] = self._ask_list(chan_question)
-            print
+            print()
             self._print("""The bot keeps a database of its admins (users who
                            can use certain sensitive commands) and owners
                            (users who can quit the bot and modify its access
@@ -347,7 +347,7 @@ class ConfigScript(object):
             frontend = {}
 
         if self.data["components"]["irc_watcher"]:
-            print
+            print()
             watcher = self.data["irc"]["watcher"] = OrderedDict()
             if self._wmf:
                 watcher["host"] = "irc.wikimedia.org"
@@ -375,7 +375,7 @@ class ConfigScript(object):
             else:
                 chan_question = "Watcher channels to join by default:"
                 watcher["channels"] = self._ask_list(chan_question)
-            print
+            print()
             self._print("""I am now creating a blank 'rules.py' file, which
                            will determine how the bot handles messages received
                            from the IRC watcher. It contains a process()
@@ -390,13 +390,13 @@ class ConfigScript(object):
         self.data["irc"]["version"] = "EarwigBot - $1 - Python/$2 https://github.com/earwig/earwigbot"
 
     def _set_commands(self):
-        print
+        print()
         msg = """Would you like to disable the default IRC commands? You can
                  fine-tune which commands are disabled later on."""
         if (not self.data["components"]["irc_frontend"] or
                 self._ask_bool(msg, default=False)):
             self.data["commands"]["disable"] = True
-        print
+        print()
         self._print("""I am now creating the 'commands/' directory, where you
                        can place custom IRC commands and plugins. Creating your
                        own commands is described in the documentation.""")
@@ -404,7 +404,7 @@ class ConfigScript(object):
         self._pause()
 
     def _set_tasks(self):
-        print
+        print()
         self._print("""I am now creating the 'tasks/' directory, where you can
                        place custom bot tasks and plugins. Creating your own
                        tasks is described in the documentation.""")
@@ -412,22 +412,22 @@ class ConfigScript(object):
         self._pause()
 
     def _set_schedule(self):
-        print
+        print()
         self._print("""The final section of your config file, 'schedule', is a
                        list of bot tasks to be started by the wiki scheduler.
                        Each entry contains cron-like time quantifiers and a
                        list of tasks. For example, the following starts the
                        'foobot' task every hour on the half-hour:""")
-        print "\x1b[33mschedule:"
-        print "    - minute: 30"
-        print "      tasks:"
-        print "          - foobot\x1b[0m"
+        print("\x1b[33mschedule:")
+        print("    - minute: 30")
+        print("      tasks:")
+        print("          - foobot\x1b[0m")
         self._print("""The following starts the 'barbot' task with the keyword
                        arguments 'action="baz"' every Monday at 05:00 UTC:""")
-        print "\x1b[33m    - week_day: 1"
-        print "      hour:     5"
-        print "      tasks:"
-        print '          - ["barbot", {"action": "baz"}]\x1b[0m'
+        print("\x1b[33m    - week_day: 1")
+        print("      hour:     5")
+        print("      tasks:")
+        print('          - ["barbot", {"action": "baz"}]\x1b[0m')
         self._print("""The full list of quantifiers is minute, hour, month_day,
                        month, and week_day. See the documentation for more
                        information.""")
@@ -449,7 +449,7 @@ class ConfigScript(object):
             open(self.config.path, "w").close()
             chmod(self.config.path, stat.S_IRUSR|stat.S_IWUSR)
         except IOError:
-            print "I can't seem to write to the config file:"
+            print("I can't seem to write to the config file:")
             raise
         self._set_metadata()
         self._set_components()
@@ -461,7 +461,7 @@ class ConfigScript(object):
         self._set_tasks()
         if components["wiki_scheduler"]:
             self._set_schedule()
-        print
+        print()
         self._print("""I am now saving config.yml with your settings. YAML is a
                        relatively straightforward format and you should be able
                        to update these settings in the future when necessary.

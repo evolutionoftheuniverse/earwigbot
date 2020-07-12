@@ -35,10 +35,10 @@ required_deps = [
 extra_deps = {
     "crypto": [
         "py-bcrypt >= 0.4",  # Hashing the bot key in the config file
-        "pycrypto >= 2.6.1",  # Storing bot passwords + keys in the config file
+        "pycryptodome >= 3.9.8",  # Storing bot passwords + keys in the config file
     ],
     "sql": [
-        "oursql >= 0.9.3.2",  # Interfacing with MediaWiki databases
+        "pymysql >= 0.5",  # Interfacing with MediaWiki databases
     ],
     "copyvios": [
         "beautifulsoup4 >= 4.6.0",  # Parsing/scraping HTML
@@ -54,7 +54,7 @@ extra_deps = {
     ],
 }
 
-dependencies = required_deps + sum(extra_deps.values(), [])
+dependencies = required_deps + sum(list(extra_deps.values()), [])
 
 with open("README.rst") as fp:
     long_docs = fp.read()
