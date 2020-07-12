@@ -122,7 +122,7 @@ class ConfigScript(object):
             mod = len(password) % 8
             if mod:
                 password = password.ljust(len(password) + (8 - mod), "\x00")
-            return hex(self._cipher.encrypt(password.encode("utf8")))
+            return hex(self._cipher.encrypt(password.decode("utf8")))
         else:
             return password
 
