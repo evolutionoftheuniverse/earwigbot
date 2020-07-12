@@ -89,7 +89,7 @@ class ConfigScript(object):
         if len(lines) > 1:
             print(("\n".join(lines[:-1])))
         while True:
-            answer = eval(input(lines[-1] + " ")) or default
+            answer = input(lines[-1] + " ") or default
             if answer or not require:
                 return answer
 
