@@ -113,6 +113,7 @@ class ConfigScript(object):
 
     def _ask_pass(self, text, encrypt=True):
         password = getpass(self.PROMPT + text + " ")
+        password = str.encode(password)
         if encrypt:
             return self._encrypt(password)
         return password
