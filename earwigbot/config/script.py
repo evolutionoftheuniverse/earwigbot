@@ -79,7 +79,7 @@ class ConfigScript(object):
         sys.stdout.flush()
 
     def _pause(self):
-        eval(input(self.PROMPT + "Press enter to continue: "))
+        input(self.PROMPT + "Press enter to continue: ")
 
     def _ask(self, text, default=None, require=True):
         text = self.PROMPT + text
