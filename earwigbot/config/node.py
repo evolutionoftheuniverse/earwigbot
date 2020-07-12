@@ -80,7 +80,7 @@ class ConfigNode(object):
                 return
         if item in base:
             ciphertext = bytes.fromhex(base[item])
-            base[item] = cipher.decrypt(ciphertext).rstrip("\x00")
+            base[item] = cipher.decrypt(ciphertext)
 
     def get(self, *args, **kwargs):
         return self._data.get(*args, **kwargs)
